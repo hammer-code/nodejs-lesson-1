@@ -17,7 +17,7 @@ function getTotalCart (lineItems) {
  * @return {string}
  */
 function formatToLocal (total) {
-  return 'Rp ' + total.toLocaleString()
+  return 'Y ' + total.toLocaleString()
 }
 
 /**
