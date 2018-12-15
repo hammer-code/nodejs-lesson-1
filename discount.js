@@ -15,10 +15,18 @@ function applyDiscount (dicountCode, total) {
   if (!foundDiscount) return total;
 
   if (foundDiscount.type === 'percent') {
-    return total - (total * foundDiscount.amount / 100)
+    return calculatePercentDiscount(total, foundDiscount.amount)
   } else if (foundDiscount.type === 'nominal') {
-    return total - foundDiscount.amount
+    return calculateNominalDiscount(total, foundDiscount.amount)
   }
+}
+
+function calculatePercentDiscount (total, amount) {
+  return total - (total * amount / 100)
+}
+
+function calculateNominalDiscount (total, amount) {
+  return total - amount
 }
 
 module.exports = {
