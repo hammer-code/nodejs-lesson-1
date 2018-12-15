@@ -8,5 +8,5 @@ var myCartLineItems = [
 
 var total = cart.getTotalCart(myCartLineItems);
 console.log('Total sebelum diskon', cart.formatToLocal(total));
-console.log('Total sebelum diskon', discount.applyDiscount('JS_20', total));
+console.log('Total sebelum diskon', discount.applyDiscount('HAMMERCODE_10', total));
 
