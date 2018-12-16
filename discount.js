@@ -10,7 +10,7 @@ var DISCOUNT_CODES = [
 function applyDiscount (dicountCode, total) {
   var foundDiscount = DISCOUNT_CODES.find(function (discount) {
     return discount.code === dicountCode
-  })
+  });
 
   if (!foundDiscount) return total;
 
@@ -26,9 +26,11 @@ function calculatePercentDiscount (total, amount) {
 }
 
 function calculateNominalDiscount (total, amount) {
-  return total - amount
+  return total - amount 
 }
 
 module.exports = {
-  applyDiscount
+  applyDiscount,
+  calculatePercentDiscount,
+  calculateNominalDiscount
 }
