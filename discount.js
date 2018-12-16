@@ -1,23 +1,26 @@
-var DISCOUNT_CODES = [
-  { code: 'HAMMERCODE_10', amount: 10, type: 'percent' },
-  { code: 'JS_20', amount: 20, type: 'nominal' },
-]
-
 /**
- * @param {string} dicountCode 
+ * @param {object} discount 
+ * @param {string} discount.amount 
+ * @param {string} discount.type   Possible values: percent / nominal
  * @param {number} total 
  */
-function applyDiscount (dicountCode, total) {
-  var foundDiscount = DISCOUNT_CODES.find(function (discount) {
-    return discount.code === dicountCode
-  });
+function applyDiscount (discount, total) {
+  if (!discount) return total;
 
-  if (!foundDiscount) return total;
+  var validTypes = ['percent', 'nominal']
+  if (!validTypes.includes(discount.type)) {
+    throw new Error(`Valid type should be either one of ${validTypes.join(',')}`)
+  }
 
-  if (foundDiscount.type === 'percent') {
-    return calculatePercentDiscount(total, foundDiscount.amount)
-  } else if (foundDiscount.type === 'nominal') {
-    return calculateNominalDiscount(total, foundDiscount.amount)
+  var isValidAmount = typeof discount.amount === 'number' 
+  if (!isValidAmount) {
+    throw new Error(`discount.amount should be type of number`)
+  }
+
+  if (discount.type === 'percent') {
+    return calculatePercentDiscount(total, discount.amount)
+  } else if (discount.type === 'nominal') {
+    return calculateNominalDiscount(total, discount.amount)
   }
 }
 

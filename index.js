@@ -1,5 +1,6 @@
 var cart = require('./cart')
 var discount = require('./discount')
+var db = require('./db')
 
 var myCartLineItems = [
   { name: 'YDKJS', price: 200, qty: 2 }, // product item
@@ -8,5 +9,7 @@ var myCartLineItems = [
 
 var total = cart.getTotalCart(myCartLineItems);
 console.log('Total sebelum diskon', cart.formatToLocal(total));
-console.log('Total sebelum diskon', discount.applyDiscount('HAMMERCODE_10', total));
+
+var d = db.findDiscountByCode('HAMMERCODE_10')
+console.log('Total sebelum diskon', discount.applyDiscount(d, total));
 
