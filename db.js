@@ -1,6 +1,6 @@
 var DISCOUNT_CODES = [
-  { code: 'HAMMERCODE_10', amount: 10, type: 'percent' },
-  { code: 'JS_20', amount: 20, type: 'nominal' },
+  { code: 'HAMMERCODE10', amount: 10, type: 'percent' },
+  { code: 'JS20', amount: 20, type: 'nominal' },
 ]
 
 function findDiscountByCode (dicountCode) {
