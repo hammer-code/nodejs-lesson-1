@@ -10,6 +10,17 @@ function total (lineItems) {
 }
 
 /**
+ * Membuang line item
+ * @param {string} lineItemId
+ * @param {object[]} lineItems
+ */
+function removeItem (lineItemId, lineItems) {
+  return lineItems.filter(function (lineItem) {
+    return lineItem.id !== lineItemId
+  });
+}
+
+/**
  * Format ke bentuk lbh bagus dibaca
  * @param  {number} total 
  * @return {string}
@@ -21,4 +32,5 @@ function format (total) {
 module.exports = {
   total: total,
   format: format,
+  removeItem: removeItem,
 }
