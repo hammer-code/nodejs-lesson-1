@@ -3,7 +3,7 @@
  * @param  {array}   lineItems Item-item yang ada di keranjang
  * @return {number}  Total harga dari cart 
  */
-function getTotalCart (lineItems) {
+function total (lineItems) {
   return lineItems.reduce(function (total, lineItem) {
     return total + (lineItem.qty * lineItem.price);
   }, 0);
@@ -14,11 +14,11 @@ function getTotalCart (lineItems) {
  * @param  {number} total 
  * @return {string}
  */
-function formatToLocal (total) {
+function format (total) {
   return '$' + total.toLocaleString()
 }
 
 module.exports = {
-  getTotalCart: getTotalCart,
-  formatToLocal: formatToLocal,
+  total: total,
+  format: format,
 }
