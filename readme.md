@@ -1,4 +1,13 @@
-## Menjalankan program
+## node-basic
 
-Cara menjalankan script node `node [namafile]`
-Maka: `node index.js`
+Belajar Dasar NodeJS 
+
+### Menjalankan Aplikasi
+```sh
+npm run start
+```
+
+### Menjalankan Test
+```sh
+npm run test
+```

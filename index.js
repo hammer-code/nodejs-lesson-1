@@ -1,5 +1,5 @@
-var cart = require('./cart')
-var db = require('./db')
+var cart = require('./src/cart')
+var db = require('./src/db')
 
 var myCartLineItems = [
   { id: 'item-1', name: 'YDKJS', price: 200, qty: 2 }, // product item
