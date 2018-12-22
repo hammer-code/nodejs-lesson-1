@@ -1,14 +1,82 @@
 var cart = require('../cart');
 
-describe('cart module', () => {
-  test('total', () => {
-    var lineItems = [
-      { id: 'item-1', qty: 5, price: 5 },
-      { id: 'item-2', qty: 2, price: 20 },
+function setupCart (products) {
+  if (!products) {
+    products = [
+      {
+        id: 'product-1',
+        name: 'Laravel',
+        price: 60,
+        description: 'Lorem'
+      },
+      { 
+        id: 'product-2',  
+        name: 'Eloquent JS',
+        price: 40,
+        description: 'Lorem',
+      }
     ]
+  }
 
-    expect(cart.total(lineItems)).toBe(65)
-  })
+  var c = cart.create();
+
+  for (var i = 0; i < products.length; i++) {
+    var product = products[i];
+    c = cart.addItem(c, product, 1);
+  }
+  
+  return {
+    cart: c,
+    expectedTotal: 100,
+  };
+}
+
+describe('cart module', () => {
+  test('create cart', function () {
+    var c = cart.create();
+
+    expect(Array.isArray(c.lineItems)).toBe(true);
+  });
+
+  test('add product to cart', function () {
+    var productA = { 
+      id: 'product-1',  
+      name: 'Eloquent JS',
+      price: 50,
+      description: 'Lorem',
+    };
+
+    var c = cart.create();
+
+    c = cart.addItem(c, productA, 2);
+
+    var lineItems = c.lineItems;
+    
+    expect(lineItems.length).toBe(1);
+    expect(lineItems[0].productId).toBe('product-1');
+    expect(lineItems[0].name).toBe('Eloquent JS');
+    expect(lineItems[0].price).toBe(50);
+    expect(lineItems[0].qty).toBe(2);
+    expect(lineItems[0].description).toBe(undefined);
+  });
+
+  test('total', function () {
+    var setup = setupCart();
+    var c = setup.cart
+
+    expect(cart.total(c)).toBe(setup.expectedTotal);
+
+    var product = {
+      id: 'product-3',
+      name: 'ReactJS',
+      price: 80,
+      description: 'Lorem ipsum',
+    }
+
+    c = cart.addItem(c, product, 3);
+
+    expect(cart.total(c)).toBe(340);
+  });
 
   test('format', () => {
     expect(cart.format(8000)).toBe('$8,000')
@@ -16,39 +84,39 @@ describe('cart module', () => {
   })
 
   test('removeItem', () => {
-    var lineItems = [
-      { id: 'item-1', qty: 5, price: 5 },
-      { id: 'item-2', qty: 2, price: 20 },
-      { id: 'item-3', qty: 1, price: 20 },
-    ]
+    var c = cart.create();
 
-    var newLineItems = cart.removeItem('item-2', lineItems)
+    c = cart.addItem(c, { id: 'product-1', price: 5 }, 5);
+    c = cart.addItem(c, { id: 'product-2', price: 20 }, 2);
+    c = cart.addItem(c, { id: 'product-3', price: 20 }, 1);
 
-    expect(newLineItems.length).toBe(2)
-    expect(cart.total(newLineItems)).toBe(45)
+    c = cart.removeItem(c, 'product-2');
+
+    expect(c.lineItems.length).toBe(2);
+    expect(cart.total(c)).toBe(45);
   })
 
   test('total with discount', () => {
-    var lineItems = [
-      { id: 'item-1', qty: 5, price: 10 },
-      { id: 'item-2', qty: 2, price: 25 },
-    ]
+    var c = cart.create();
 
-    expect(cart.total(lineItems)).toBe(100)
+    c = cart.addItem(c, { id: 'product-1', price: 10 }, 5);
+    c = cart.addItem(c, { id: 'product-2', price: 25 }, 2);
+
+    expect(cart.total(c)).toBe(100)
 
     var discountA = {
       type: 'percent',
       amount: 10
     }
 
-    expect(cart.total(lineItems, discountA)).toBe(90)
+    expect(cart.total(c, discountA)).toBe(90)
 
     var discountB = {
       type: 'nominal',
       amount: 30
     }
 
-    expect(cart.total(lineItems, discountB)).toBe(70)    
+    expect(cart.total(c, discountB)).toBe(70)    
   })
 
   test('discountByPercent', () => {

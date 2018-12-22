@@ -1,10 +1,65 @@
 /**
+ * @return {Cart}
+ */
+function create() {
+  return {
+    lineItems: [],
+  }
+}
+
+/**
+ * @param  {Product} product 
+ * @return {LineItem}
+ */
+function createLineItem(product, qty) {
+  return {
+    productId: product.id,
+    name: product.name,
+    price: product.price,
+    qty: qty
+  }
+}
+
+/**
+ * @param  {Cart} cart 
+ * @param  {Product} product 
+ * @param  {number} qty 
+ * @return {Cart}
+ */
+function addItem (cart, product, qty) {
+  var lineItems = cart.lineItems;
+
+  var isInCart = lineItems.find(function (lineItem) {
+    return lineItem.productId === product.id;
+  });
+
+  if (!isInCart) {
+    var lineItem = createLineItem(product, qty);
+    
+    return {
+      lineItems: lineItems.concat(lineItem),
+    };
+  }
+
+  return {
+    lineItems: lineItems.map(function (lineItem) {
+      if (lineItem.productId === product.id) {
+        var newQty = lineItem.qty + qty;
+        return Object.assign({}, lineItem, { qty: newQty });
+      }
+    }),
+  };
+}
+
+/**
  * Menghitung jumlah total harga cart
- * @param  {array}   lineItems Item-item yang ada di keranjang
+ * @param  {Cart}    cart
  * @param  {object?} discount 
  * @return {number}  Total harga dari cart 
  */
-function total (lineItems, discount) {
+function total (cart, discount) {
+  var lineItems = cart.lineItems;
+  
   var sum =  lineItems.reduce(function (total, lineItem) {
     return total + (lineItem.qty * lineItem.price);
   }, 0);
@@ -14,13 +69,18 @@ function total (lineItems, discount) {
 
 /**
  * Membuang line item
- * @param {string} lineItemId
- * @param {object[]} lineItems
+ * @param  {Cart}   cart
+ * @param  {string} productId
+ * @return {Cart}
  */
-function removeItem (lineItemId, lineItems) {
-  return lineItems.filter(function (lineItem) {
-    return lineItem.id !== lineItemId
-  });
+function removeItem (cart, productId) {
+  var lineItems = cart.lineItems;
+
+  return {
+    lineItems: lineItems.filter(function (lineItem) {
+      return lineItem.productId !== productId
+    }),
+  }
 }
 
 /**
@@ -68,6 +128,8 @@ function discountByNominal (total, amount) {
 }
 
 module.exports = {
+  create: create,
+  addItem: addItem,
   total: total,
   format: format,
   removeItem: removeItem,
