@@ -1,14 +1,19 @@
 var cart = require('./src/cart')
-var db = require('./src/db')
+var discountRepo = require('./src/repo/discount')
 
-var myCartLineItems = [
-  { id: 'item-1', name: 'YDKJS', price: 200, qty: 2 }, // product item
-  { id: 'item-2', name: 'EloquentJS', price: 80, qty: 1 }, // product item
+var c = cart.create();
+
+var products = [
+  { id: 'product-1', name: 'YDKJS', price: 200 },
+  { id: 'product-2', name: 'EloquentJS', price: 80 },
 ];
 
-var totalA = cart.total(myCartLineItems);
-console.log('Total sebelum diskon', cart.format(totalA));
+c = cart.addItem(c, products[0], 2);
+c = cart.addItem(c, products[1], 1);
 
-var d = db.findDiscountByCode('HAMMERCODE10');
-var totalB = cart.total(myCartLineItems, d)
-console.log('Total setelah diskon', cart.format(totalB));
+var totalA = cart.format(cart.total(c));
+console.log('Total sebelum diskon', totalA);
+
+var d = discountRepo.findByCode('HAMMERCODE10');
+var totalB = cart.format(cart.total(c, d));
+console.log('Total setelah diskon', totalB);
