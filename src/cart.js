@@ -8,7 +8,7 @@ function create() {
 }
 
 /**
- * @param  {Product} product 
+ * @param  {Product} product
  * @return {LineItem}
  */
 function createLineItem(product, qty) {
@@ -21,9 +21,9 @@ function createLineItem(product, qty) {
 }
 
 /**
- * @param  {Cart} cart 
- * @param  {Product} product 
- * @param  {number} qty 
+ * @param  {Cart} cart
+ * @param  {Product} product
+ * @param  {number} qty
  * @return {Cart}
  */
 function addItem (cart, product, qty) {
@@ -35,7 +35,7 @@ function addItem (cart, product, qty) {
 
   if (!isInCart) {
     var lineItem = createLineItem(product, qty);
-    
+
     return {
       lineItems: lineItems.concat(lineItem),
     };
@@ -54,12 +54,12 @@ function addItem (cart, product, qty) {
 /**
  * Menghitung jumlah total harga cart
  * @param  {Cart}    cart
- * @param  {object?} discount 
- * @return {number}  Total harga dari cart 
+ * @param  {object?} discount
+ * @return {number}  Total harga dari cart
  */
 function total (cart, discount) {
   var lineItems = cart.lineItems;
-  
+
   var sum =  lineItems.reduce(function (total, lineItem) {
     return total + (lineItem.qty * lineItem.price);
   }, 0);
@@ -85,7 +85,7 @@ function removeItem (cart, productId) {
 
 /**
  * Format ke bentuk lbh bagus dibaca
- * @param  {number} total 
+ * @param  {number} total
  * @return {string}
  */
 function format (total) {
@@ -93,9 +93,9 @@ function format (total) {
 }
 
 /**
- * @param  {number} total 
- * @param  {object} discount 
- * @param  {string} discount.amount 
+ * @param  {number} total
+ * @param  {object} discount
+ * @param  {string} discount.amount
  * @param  {string} discount.type   Possible values: percent / nominal
  * @return {number}
  */
@@ -107,7 +107,7 @@ function applyDiscount (total, discount) {
     throw new Error(`Valid type should be either one of ${validTypes.join(',')}`)
   }
 
-  var isValidAmount = typeof discount.amount === 'number' 
+  var isValidAmount = typeof discount.amount === 'number'
   if (!isValidAmount) {
     throw new Error(`discount.amount should be type of number`)
   }
@@ -124,7 +124,7 @@ function discountByPercent (total, amount) {
 }
 
 function discountByNominal (total, amount) {
-  return total - amount 
+  return total - amount
 }
 
 module.exports = {
