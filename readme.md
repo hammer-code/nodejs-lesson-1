@@ -1,13 +1,17 @@
-## node-basic
+# node-basic
+Belajar Dasar NodeJS
 
-Belajar Dasar NodeJS 
+## Install Dependensi
+```sh
+npm install
+```
 
-### Menjalankan Aplikasi
+## Menjalankan Aplikasi
 ```sh
 npm run start
 ```
 
-### Menjalankan Test
+## Menjalankan Test
 ```sh
 npm run test
 ```
